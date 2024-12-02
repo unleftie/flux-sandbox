@@ -14,6 +14,6 @@ namespace: docker-gs-ping
 resources:
   - ../base/docker-gs-ping
 patches:
-  - path: docker-gs-ping-values.yaml
+  - path: podinfo-values.yaml
     target:
       kind: HelmRelease
