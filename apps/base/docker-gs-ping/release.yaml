@@ -12,7 +12,7 @@ spec:
         kind: HelmRepository
         name: docker-gs-ping
       version: 1.4.1
-  interval: 50m
+  interval: 1m0s # FIXME: revert to 50m
   install:
     remediation:
       retries: 3
