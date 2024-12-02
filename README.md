@@ -289,7 +289,7 @@ Set the kubectl context to your staging cluster and bootstrap Flux:
 
 ```sh
 flux bootstrap github \
-    --context=staging \
+    --context=k3d-k3s-default \
     --owner=${GITHUB_USER} \
     --repository=${GITHUB_REPO} \
     --branch=main \
@@ -327,7 +327,7 @@ Bootstrap Flux on production by setting the context and path to your production 
 
 ```sh
 flux bootstrap github \
-    --context=production \
+    --context=k3d-k3s-production \
     --owner=${GITHUB_USER} \
     --repository=${GITHUB_REPO} \
     --branch=main \
@@ -399,7 +399,7 @@ Bootstrap the `production-clone` cluster:
 
 ```sh
 flux bootstrap github \
-    --context=production-clone \
+    --context=k3d-k3s-production-clone \
     --owner=${GITHUB_USER} \
     --repository=${GITHUB_REPO} \
     --branch=main \
@@ -437,7 +437,7 @@ Tell Flux to deploy the production workloads on the `production-clone` cluster:
 
 ```sh
 flux reconcile kustomization flux-system \
-    --context=production-clone \
+    --context=k3d-k3s-production-clone \
     --with-source
 ```
 
