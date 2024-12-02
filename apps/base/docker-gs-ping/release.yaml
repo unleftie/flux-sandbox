@@ -4,7 +4,6 @@ metadata:
   name: docker-gs-ping
   namespace: docker-gs-ping
 spec:
-  releaseName: docker-gs-ping
   chart:
     spec:
       chart: docker-gs-ping
