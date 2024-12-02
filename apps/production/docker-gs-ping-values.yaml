@@ -1,0 +1,22 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: docker-gs-ping
+  namespace: docker-gs-ping
+spec:
+  chart:
+    spec:
+      version: ">=1.0.0"
+  test:
+    enable: true
+  values:
+    autoscaling:
+      enabled: true
+      minReplicas: 3
+      maxReplicas: 4
+    ingress:
+      hosts:
+        - host: docker-gs-ping.production
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
