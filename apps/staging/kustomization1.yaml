@@ -1,9 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: podinfo
+namespace: docker-gs-ping
 resources:
-  - ../base/podinfo
+  - ../base/docker-gs-ping
 patches:
-  - path: podinfo-values.yaml
+  - path: docker-gs-ping-values.yaml
     target:
       kind: HelmRelease
