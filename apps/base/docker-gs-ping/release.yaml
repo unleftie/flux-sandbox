@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: docker-gs-ping
-      reconcileStrategy: ChartVersion
+      reconcileStrategy: Revision
       sourceRef:
         kind: HelmRepository
         name: docker-gs-ping
@@ -16,9 +16,9 @@ spec:
   install:
     remediation:
       retries: 3
-  upgrade:
-    remediation:
-      retries: 3
+  # upgrade:
+  #   remediation:
+  #     retries: 3
   # Default values
   # https://github.com/unleftie/docker-gs-ping/blob/main/charts/docker-gs-ping/values.yaml
   values:
