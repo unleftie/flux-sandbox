@@ -8,9 +8,11 @@ spec:
   chart:
     spec:
       chart: docker-gs-ping
+      reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
         name: docker-gs-ping
+      version: 1.4.1
   interval: 50m
   install:
     remediation:
@@ -23,3 +25,6 @@ spec:
   values:
     podLabels:
       cicd: flux
+    ingress:
+      enabled: true
+      className: nginx
