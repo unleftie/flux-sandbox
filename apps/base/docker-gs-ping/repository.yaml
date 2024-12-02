@@ -4,5 +4,5 @@ metadata:
   name: docker-gs-ping
   namespace: docker-gs-ping
 spec:
-  interval: 5m
+  interval: 1m # FIXME: revert to 50m
   url: https://unleftie.github.io/docker-gs-ping
