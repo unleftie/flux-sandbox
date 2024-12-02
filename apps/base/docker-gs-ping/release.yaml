@@ -28,4 +28,4 @@ spec:
       className: nginx
     service:
       type: ClusterIP
-      port: 8081
+      port: 8081 # FIXME: remove

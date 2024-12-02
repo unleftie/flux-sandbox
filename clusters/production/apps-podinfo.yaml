@@ -1,8 +1,7 @@
----
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps
+  name: apps-podinfo
   namespace: flux-system
 spec:
   interval: 10m0s
@@ -11,7 +10,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./apps/production
+  path: ./apps/staging/podinfo
   prune: true
   wait: true
   timeout: 5m0s

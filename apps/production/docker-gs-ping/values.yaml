@@ -4,16 +4,16 @@ metadata:
   name: docker-gs-ping
   namespace: docker-gs-ping
 spec:
-  # chart:
-  #   spec:
-  #     version: ">=1.0.0"
-  # test:
-  #   enable: true
+  chart:
+    spec:
+      version: ">=1.0.0"
+  test:
+    enable: false
   values:
     autoscaling:
       enabled: true
-      minReplicas: 3
-      maxReplicas: 4
+      minReplicas: 2
+      maxReplicas: 3
     ingress:
       hosts:
         - host: docker-gs-ping.production
