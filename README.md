@@ -3,6 +3,8 @@
 [![test](https://github.com/fluxcd/flux2-kustomize-helm-example/workflows/test/badge.svg)](https://github.com/fluxcd/flux2-kustomize-helm-example/actions)
 [![e2e](https://github.com/fluxcd/flux2-kustomize-helm-example/workflows/e2e/badge.svg)](https://github.com/fluxcd/flux2-kustomize-helm-example/actions)
 
+<https://fluxcd.io/flux/guides/repository-structure/>
+
 For this example we assume a scenario with two clusters: staging and production.
 The end goal is to leverage Flux and Kustomize to manage both clusters while minimizing duplicated declarations.
 
