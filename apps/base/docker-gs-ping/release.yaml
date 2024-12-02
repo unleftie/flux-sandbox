@@ -26,3 +26,6 @@ spec:
     ingress:
       enabled: true
       className: nginx
+    service:
+      type: ClusterIP
+      port: 8081
