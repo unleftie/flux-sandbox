@@ -13,7 +13,7 @@ kind: Kustomization
 namespace: docker-gs-ping
 resources:
   - ../base/docker-gs-ping
-patches:
-  - path: podinfo-values.yaml
-    target:
-      kind: HelmRelease
+# patches:
+#   - path: docker-gs-ping-values.yaml
+#     target:
+#       kind: HelmRelease
