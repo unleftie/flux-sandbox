@@ -11,7 +11,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: docker-gs-ping
-  interval: 1m0s # FIXME: revert to 50m
+  interval: 50m
   install:
     remediation:
       retries: 3
@@ -26,6 +26,3 @@ spec:
     ingress:
       enabled: true
       className: nginx
-    service:
-      type: ClusterIP
-      port: 8081 # FIXME: remove
