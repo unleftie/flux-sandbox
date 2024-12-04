@@ -25,4 +25,4 @@ spec:
       cicd: flux
     ingress:
       enabled: true
-      className: nginx
+      # className: nginx
