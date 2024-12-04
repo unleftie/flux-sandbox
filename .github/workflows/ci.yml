@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     if: |
-      inputs.runKics == true ||
+      inputs.runKics == true &&
       github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     if: |
-      inputs.runKindTest == true ||
+      inputs.runKindTest == true &&
       github.event_name == 'workflow_dispatch'
     steps:
       - name: Harden Runner
