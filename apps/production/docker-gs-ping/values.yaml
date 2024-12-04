@@ -12,9 +12,11 @@ spec:
   values:
     autoscaling:
       enabled: true
-      minReplicas: 2
-      maxReplicas: 3
+      minReplicas: 4
+      maxReplicas: 6
     ingress:
+      annotations:
+        ingress.kubernetes.io/ssl-redirect: "false"
       hosts:
         - host: docker-gs-ping.production
           paths:

@@ -13,7 +13,7 @@ spec:
     autoscaling:
       enabled: true
       minReplicas: 2
-      maxReplicas: 3
+      maxReplicas: 4
     ingress:
       annotations:
         ingress.kubernetes.io/ssl-redirect: "false"
@@ -22,4 +22,3 @@ spec:
           paths:
             - path: /
               pathType: ImplementationSpecific
-              port: http
