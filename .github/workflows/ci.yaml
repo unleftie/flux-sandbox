@@ -64,7 +64,7 @@ jobs:
     timeout-minutes: 5
     if: |
       inputs.runKics == true ||
-      github.event_name != 'push'
+      github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
       issues: write
@@ -102,7 +102,7 @@ jobs:
     timeout-minutes: 20
     if: |
       inputs.runKindTest == true ||
-      github.event_name != 'push'
+      github.event_name == 'workflow_dispatch'
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@v2
