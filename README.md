@@ -1,6 +1,6 @@
 # flux-sandbox
 
-[![ci](https://github.com/fluxcd/flux2-kustomize-helm-example/workflows/ci/badge.svg)](https://github.com/fluxcd/flux2-kustomize-helm-example/actions)
+[![CI](https://github.com/unleftie/flux-sandbox/actions/workflows/ci.yml/badge.svg)](https://github.com/unleftie/flux-sandbox/actions/workflows/ci.yml)
 
 <https://fluxcd.io/flux/guides/repository-structure/>
 
