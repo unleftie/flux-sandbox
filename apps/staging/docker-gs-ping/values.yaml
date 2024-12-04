@@ -21,4 +21,5 @@ spec:
         - host: docker-gs-ping.staging
           paths:
             - path: /
-              pathType: ImplementationSpecific
+              pathType: Prefix
+              port: http
