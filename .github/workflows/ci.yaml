@@ -1,0 +1,191 @@
+name: CI
+on:
+  workflow_dispatch:
+    inputs:
+      runKics:
+        description: Run KICS scan
+        type: boolean
+        default: true
+        required: false
+      runKindTest:
+        description: Run Kubernetes Kind test
+        type: boolean
+        default: true
+        required: false
+  pull_request:
+    paths-ignore: ["**.md", "LICENSE", ".github/dependabot.yml"]
+    branches: ["master", "main"]
+    types: [opened, reopened]
+  push:
+    paths-ignore: ["**.md", "LICENSE", ".github/dependabot.yml"]
+    branches: ["master", "main"]
+
+env:
+  KICS_SCAN_PATH: "./"
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: CI
+  cancel-in-progress: false
+
+jobs:
+  manifest-validation:
+    name: Manifest validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup yq
+        uses: fluxcd/pkg/actions/yq@main
+
+      - name: Setup kubeconform
+        uses: fluxcd/pkg/actions/kubeconform@main
+
+      - name: Setup kustomize
+        uses: fluxcd/pkg/actions/kustomize@main
+
+      - name: Validate manifests
+        run: .github/scripts/manifest-validation.sh
+
+  scan:
+    name: Checkmarx KICS
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: |
+      inputs.runKics == true ||
+      github.event_name != 'push'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+      security-events: write
+      actions: read
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run KICS scan
+        uses: checkmarx/kics-github-action@v2
+        with:
+          path: ${{ env.KICS_SCAN_PATH }}
+          fail_on: high
+          output_formats: "json,sarif"
+          exclude_paths: ".github/workflows/scorecard.yml"
+          exclude_queries: "555ab8f9-2001-455e-a077-f2d0f41e2fb9" # Unpinned Actions Full Length Commit SHA
+        continue-on-error: true
+
+      - name: Upload to code-scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+
+  kubernetes-kind-test:
+    name: Kubernetes Kind test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: |
+      inputs.runKindTest == true ||
+      github.event_name != 'push'
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flux
+        uses: fluxcd/flux2/action@main
+
+      - name: Setup Kubernetes
+        uses: helm/kind-action@v1.7.0
+        with:
+          cluster_name: flux
+
+      - name: Install Flux in Kubernetes Kind
+        run: flux install
+
+      - name: Setup cluster reconciliation
+        run: |
+          flux create source git flux-system \
+          --url=${{ github.event.repository.html_url }} \
+          --branch=${GITHUB_REF#refs/heads/} \
+          --username=${GITHUB_ACTOR} \
+          --password=${{ secrets.GITHUB_TOKEN }} \
+          --ignore-paths="clusters/**/flux-system/"
+          flux create kustomization flux-system \
+          --source=flux-system \
+          --path=./clusters/staging
+
+      - name: Verify cluster reconciliation
+        run: |
+          kubectl -n flux-system wait kustomization/infra-controllers --for=condition=ready --timeout=5m
+          kubectl -n flux-system wait kustomization/apps-podinfo --for=condition=ready --timeout=5m
+          kubectl -n flux-system wait kustomization/apps-docker-gs-ping --for=condition=ready --timeout=5m
+
+      - name: Verify helm reconciliation
+        run: |
+          kubectl -n podinfo wait helmrelease/podinfo --for=condition=ready --timeout=5m
+
+      - name: Debug failure
+        if: failure()
+        run: |
+          kubectl -n flux-system get all
+          kubectl -n flux-system logs deploy/source-controller
+          kubectl -n flux-system logs deploy/kustomize-controller
+          kubectl -n flux-system logs deploy/helm-controller
+          flux get all --all-namespaces
+
+  release:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: |
+      github.event_name == 'push'
+    needs: [manifest-validation]
+    permissions:
+      packages: write
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v4
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          semantic_version: 24
+          extra_plugins: |
+            conventional-changelog-conventionalcommits@8.0.0
+            @semantic-release/github@10.3.5
