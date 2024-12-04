@@ -10,7 +10,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./apps/production/podinfo
+  path: ./apps/staging/podinfo
   prune: true
   wait: true
   timeout: 5m0s
@@ -27,7 +27,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./apps/production/docker-gs-ping
+  path: ./apps/staging/docker-gs-ping
   prune: true
   wait: true
   timeout: 5m0s
