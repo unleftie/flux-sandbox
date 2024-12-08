@@ -26,3 +26,14 @@ spec:
     ingress:
       enabled: true
       port: http
+      # className: nginx
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: NotIn
+                  values:
+                    - k3d-k3s-default-server-0
