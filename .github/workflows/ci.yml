@@ -27,6 +27,8 @@ defaults:
   run:
     shell: bash
 
+permissions: {}
+
 concurrency:
   group: CI
   cancel-in-progress: false
