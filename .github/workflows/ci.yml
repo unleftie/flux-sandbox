@@ -131,11 +131,8 @@ jobs:
       - name: Install Cloud Provider Kind
         run: |
           go install sigs.k8s.io/cloud-provider-kind@latest
-          ls -lap ~/go/bin/
-          ls -lap $GOBIN/
           stat ~/go/bin/cloud-provider-kind
-          stat /usr/local/bin/cloud-provider-kind
-          mv ~/go/bin/cloud-provider-kind /usr/local/bin/cloud-provider-kind
+          install ~/go/bin/cloud-provider-kind /usr/local/bin
           ./usr/local/bin/cloud-provider-kind
 
       - name: Install Flux in Kubernetes Kind
