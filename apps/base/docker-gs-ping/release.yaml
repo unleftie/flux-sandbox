@@ -21,8 +21,6 @@ spec:
   # Default values
   # https://github.com/unleftie/docker-gs-ping/blob/main/charts/docker-gs-ping/values.yaml
   values:
-    podLabels:
-      cicd: flux
     ingress:
       enabled: true
       className: nginx
