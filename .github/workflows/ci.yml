@@ -149,6 +149,7 @@ jobs:
 
       - name: Verify cluster reconciliation
         run: |
+          kubectl label node flux-control-plane node.kubernetes.io/exclude-from-external-load-balancers-
           kubectl -n flux-system wait kustomization/infra-controllers --for=condition=ready --timeout=5m
           kubectl -n flux-system wait kustomization/apps-podinfo --for=condition=ready --timeout=5m
           kubectl -n flux-system wait kustomization/apps-docker-gs-ping --for=condition=ready --timeout=5m
