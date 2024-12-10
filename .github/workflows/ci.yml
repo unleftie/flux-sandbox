@@ -148,11 +148,11 @@ jobs:
           --source=flux-system \
           --path=./clusters/staging
 
-      - name: Run Cloud Provider Kind
+      - name: Run Cloud Provider Kind in background
         run: |
           cd ~/go/bin
           ls -lap
-          ./cloud-provider-kind
+          ./cloud-provider-kind &
 
       - name: Verify cluster reconciliation
         run: |
