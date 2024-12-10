@@ -15,8 +15,12 @@ spec:
       minReplicas: 2
       maxReplicas: 4
     ingress:
-      annotations:
-        ingress.kubernetes.io/ssl-redirect: "false"
+      # annotations:
+      #   ingress.kubernetes.io/ssl-redirect: "false"
+      tls:
+        - hosts:
+            - docker-gs-ping.staging
+          secretName: docker-gs-ping-staging-selfsigned-tls
       hosts:
         - host: docker-gs-ping.staging
           paths:

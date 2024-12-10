@@ -39,3 +39,6 @@ spec:
         type: LoadBalancer
     admissionWebhooks:
       enabled: false
+    extraArgs:
+      default-ssl-certificate: "ingress-nginx/docker-gs-ping-staging-selfsigned-tls"
+
