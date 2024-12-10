@@ -22,7 +22,7 @@ on:
 
 env:
   KICS_SCAN_PATH: "./"
-  CLUSTER_NAME: "flux"
+  KIND_CLUSTER_NAME: "flux"
 
 defaults:
   run:
@@ -107,11 +107,12 @@ jobs:
       inputs.runKindTest == true &&
       github.event_name == 'workflow_dispatch'
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@v2
-        with:
-          disable-sudo: true
-          egress-policy: audit
+      # FIXME: Uncomment when the action is ready
+      # - name: Harden Runner
+      #   uses: step-security/harden-runner@v2
+      #   with:
+      #     disable-sudo: true
+      #     egress-policy: audit
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -122,7 +123,7 @@ jobs:
       - name: Setup Kubernetes
         uses: helm/kind-action@v1.10.0
         with:
-          cluster_name: ${{ env.CLUSTER_NAME }}
+          cluster_name: ${{ env.KIND_CLUSTER_NAME }}
 
       - name: Install Golang
         uses: actions/setup-go@v5
@@ -131,7 +132,9 @@ jobs:
       - name: Install and run Cloud Provider Kind
         run: |
           go install sigs.k8s.io/cloud-provider-kind@latest
-          ./home/runner/go/bin/cloud-provider-kind
+          cd ~/.go/bin
+          ls -lap
+          ./cloud-provider-kind
 
       - name: Install Flux in Kubernetes Kind
         run: flux install
