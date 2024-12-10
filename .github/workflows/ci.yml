@@ -120,19 +120,22 @@ jobs:
       - name: Setup Flux
         uses: fluxcd/flux2/action@main
 
+      - name: Setup Go
+        uses: actions/setup-go@v5
+
       - name: Setup Kubernetes
         uses: helm/kind-action@v1.10.0
         with:
           cluster_name: ${{ env.KIND_CLUSTER_NAME }}
 
-      - name: Install Golang
-        uses: actions/setup-go@v5
-
         # https://kind.sigs.k8s.io/docs/user/loadbalancer
       - name: Install and run Cloud Provider Kind
         run: |
           go install sigs.k8s.io/cloud-provider-kind@latest
-          cd ~/.go/bin
+
+      - name: Run Cloud Provider Kind
+        run: |
+          cd ~/go/bin
           ls -lap
           ./cloud-provider-kind
 
