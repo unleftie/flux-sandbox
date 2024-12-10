@@ -31,9 +31,11 @@ spec:
         name: ingress-nginx
         namespace: ingress-nginx
       interval: 12h
+  # Default values
+  # https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
   values:
     controller:
       service:
-        type: "LoadBalancer"
+        type: LoadBalancer
     admissionWebhooks:
       enabled: false
