@@ -129,8 +129,7 @@ jobs:
 
         # https://kind.sigs.k8s.io/docs/user/loadbalancer
       - name: Install Cloud Provider Kind
-        run: |
-          go install sigs.k8s.io/cloud-provider-kind@latest
+        run: go install sigs.k8s.io/cloud-provider-kind@latest
 
       - name: Install Flux in Kubernetes Kind
         run: flux install
@@ -164,8 +163,8 @@ jobs:
           kubectl -n podinfo wait helmrelease/podinfo --for=condition=ready --timeout=5m
           kubectl -n docker-gs-ping wait helmrelease/docker-gs-ping --for=condition=ready --timeout=5m
 
-      - name: Debug failure
-        if: failure()
+      - name: Get logs
+        if: always()
         run: |
           kubectl -n flux-system get all
           kubectl -n flux-system logs deploy/source-controller
