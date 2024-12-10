@@ -107,12 +107,11 @@ jobs:
       inputs.runKindTest == true &&
       github.event_name == 'workflow_dispatch'
     steps:
-      # FIXME: Uncomment when the action is ready
-      # - name: Harden Runner
-      #   uses: step-security/harden-runner@v2
-      #   with:
-      #     disable-sudo: true
-      #     egress-policy: audit
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: audit
 
       - name: Checkout
         uses: actions/checkout@v4
