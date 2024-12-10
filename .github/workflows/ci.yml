@@ -129,15 +129,9 @@ jobs:
           cluster_name: ${{ env.KIND_CLUSTER_NAME }}
 
         # https://kind.sigs.k8s.io/docs/user/loadbalancer
-      - name: Install and run Cloud Provider Kind
+      - name: Install Cloud Provider Kind
         run: |
           go install sigs.k8s.io/cloud-provider-kind@latest
-
-      - name: Run Cloud Provider Kind
-        run: |
-          cd ~/go/bin
-          ls -lap
-          ./cloud-provider-kind
 
       - name: Install Flux in Kubernetes Kind
         run: flux install
@@ -153,6 +147,12 @@ jobs:
           flux create kustomization flux-system \
           --source=flux-system \
           --path=./clusters/staging
+
+      - name: Run Cloud Provider Kind
+        run: |
+          cd ~/go/bin
+          ls -lap
+          ./cloud-provider-kind
 
       - name: Verify cluster reconciliation
         run: |
