@@ -128,11 +128,10 @@ jobs:
         uses: actions/setup-go@v5
 
         # https://kind.sigs.k8s.io/docs/user/loadbalancer
-      - name: Install Cloud Provider Kind
+      - name: Install and run Cloud Provider Kind
         run: |
           go install sigs.k8s.io/cloud-provider-kind@latest
-          stat ~/go/bin/cloud-provider-kind
-          .~/go/bin/cloud-provider-kind
+          ./home/runner/go/bin/cloud-provider-kind
 
       - name: Install Flux in Kubernetes Kind
         run: flux install
