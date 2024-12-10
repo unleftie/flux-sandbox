@@ -123,6 +123,15 @@ jobs:
         with:
           cluster_name: flux
 
+      - name: Install Golang
+        uses: actions/setup-go@v5
+
+        # https://kind.sigs.k8s.io/docs/user/loadbalancer
+      - name: Install Cloud Provider Kind
+        run: |
+          go install sigs.k8s.io/cloud-provider-kind@latest
+          mv ~/go/bin/cloud-provider-kind /usr/local/bin/cloud-provider-kind
+
       - name: Install Flux in Kubernetes Kind
         run: flux install
 
@@ -147,6 +156,7 @@ jobs:
       - name: Verify helm reconciliation
         run: |
           kubectl -n podinfo wait helmrelease/podinfo --for=condition=ready --timeout=5m
+          kubectl -n docker-gs-ping wait helmrelease/docker-gs-ping --for=condition=ready --timeout=5m
 
       - name: Debug failure
         if: failure()
