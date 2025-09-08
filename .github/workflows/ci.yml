@@ -120,7 +120,7 @@ jobs:
         uses: fluxcd/flux2/action@main
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
 
       - name: Setup Kubernetes
         uses: helm/kind-action@v1.12.0
