@@ -19,6 +19,8 @@ on:
   push:
     paths-ignore: ["**.md", "LICENSE", ".github/dependabot.yml"]
     branches: ["master", "main"]
+
+env:
   KIND_CLUSTER_NAME: "flux"
 
 defaults:
